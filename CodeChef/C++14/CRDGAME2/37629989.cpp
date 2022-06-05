@@ -1,0 +1,212 @@
+#include<bits/stdc++.h>
+#define ull unsigned long long int
+#define ll long long
+#define f(i,n) for(int i = 0;i<n ;i++)
+#define ii pair<int,int>
+#define vii vector<ii>
+#define vi vector<int>
+#define vl vector<ll>
+#define mii map<int,int>
+#define uii unordered_map<int,int>
+#define all(x) x.begin(),x.end()
+#define ff first
+#define ss second
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define endl "\n"
+#define pb push_back
+#define INF 0x3f3f3f3f
+#define print(x) cout<<x<<"\n";
+#define printv(v) for(auto it : v) cout<<it<<" ";
+#define rall(v) v.rbegin(),v.rend()
+
+//#include<boost/multiprecision/cpp_int.hpp>
+//#include<ext/pb_ds/assoc_container.hpp>
+//#include<ext/pb_ds/tree_policy.hpp>
+//(Uncomment when needed and be sure it not give TLE bcoz it requires time)
+//#pragma GCC optimize "trapv"//to check integer overflow and gives RE.
+//typedef tree<pair<int,int>,null_type,
+//less<pair<int,int>>,rb_tree_tag,tree_order_statistics_node_update>   ordered_set;
+//(UNCOMMENT WHEN HAVING LOTS OF RECURSIONS)
+//#pragma comment(linker, "/stack:200000000")
+//(UNCOMMENT WHEN NEEDED)
+//#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
+//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//#pragma GCC optimize("O3")
+//uncoment for large int requirement
+//using boost::multiprecision::cpp_int;
+//using namespace _gnu_pbds;
+
+using namespace std;
+
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
+template<typename T>
+struct FenwickTree
+{
+    T N;
+    vector<int> tree;
+
+    void init(int n)
+    {
+        N = n;
+        tree.assign(n + 1, 0);
+    }
+
+    void update(int idx, T val)
+    {
+        while (idx <= N)
+        {
+            tree[idx] += val;
+            idx += idx & -idx;
+        }
+    }
+
+    void updateMax(int idx, T val)
+    {
+        while (idx <= N)
+        {
+            tree[idx] = max(tree[idx], val);
+            idx += idx & -idx;
+        }
+    }
+
+    T pref(int idx)
+    {
+        T ans = 0;
+        while (idx > 0)
+        {
+            ans += tree[idx];
+            idx -= idx & -idx;
+        }
+        return ans;
+    }
+
+    T rsum(int l, int r)
+    {
+        return pref(r) - pref(l - 1);
+    }
+
+    T prefMax(int idx)
+    {
+        T ans = -2e9;
+        while (idx > 0)
+        {
+            ans = max(ans, tree[idx]);
+            idx -= idx & -idx;
+        }
+        return ans;
+    }
+};
+//~ const int MAXN = 1e6+10;
+//~ std::vector <int> prime;
+//~ bool is_composite[MAXN];
+
+//~ void sieve (int n) {
+    //~ std::fill (is_composite, is_composite + n, false);
+    //~ for (int i = 2; i < n; ++i) {
+        //~ if (!is_composite[i]) prime.push_back (i);
+        //~ for (int j = 0; j < (int)prime.size () && i * prime[j] < n; ++j) {
+            //~ is_composite[i * prime[j]] = true;
+            //~ if (i % prime[j] == 0) break;
+        //~ }
+    //~ }
+//~ }
+
+ll stoii(string s){
+    ll ans = 0;
+    for(auto it: s){
+        ll cur = it-'0';
+        ans = ans*10+cur;
+    }
+    return ans;
+}
+//use it with unordered_map<T,T,custom_hash> safe_map
+const long long int MOD = 1e9+7;
+int dx[]={-1,0,1,0};
+int dy[]={0,1,0,-1};
+const long long int N = 1e5+10 ;
+ll ipow(ll base,ll exp ){
+    ll res = 1 ;
+    while(exp>0){
+        if(exp&1) res = (base*res)%MOD,exp--;
+        base = (base*base)%MOD;
+        exp>>=1;
+
+    }
+    return res%MOD;
+}
+ll mul(ll x, ll y)
+{
+    return (x * 1ll * y) % MOD;
+}
+
+
+ll inv(ll x)
+{
+    return ipow(x, MOD - 2);
+}
+
+ll divide(ll x, ll y)
+{
+    return mul(x, inv(y));
+}
+
+ll fact[N];
+
+
+
+ll C(ll n, ll k)
+{
+    return divide(fact[n], mul(fact[k], fact[n - k]));
+}
+
+int main(){
+    fast_io
+    #ifndef ONLINE_JUDGE
+    freopen("inputa.txt","r",stdin);
+    freopen("outputa.txt","w",stdout);
+    #endif
+    int t;
+    t = 1;
+    cin>>t;
+    //cout<<ipow(2,6)<<endl;
+fact[0] = 1;
+    for(int i = 1; i < N; i++)
+        fact[i] = mul(fact[i - 1], i);
+    while(t--){
+   ll n;
+   cin>>n;
+   vl v(n);
+   unordered_map<ll,ll> u;
+   ll mx = -INF;
+   for(int i  = 0 ; i<n ;i++){
+    cin>>v[i];
+    u[v[i]]++;
+     if(v[i]>mx)
+        mx = v[i];
+   }
+   //cout<<mx<<" ";
+   ll total = ipow(2,n);
+   ll mxfreq = u[mx];
+   if(mxfreq%2==0){
+   ll minus = ipow(2,n-mxfreq);
+   minus = (minus*C(mxfreq,mxfreq/2))%MOD;
+   total = (total-minus+MOD)%MOD;
+   cout<<total<<endl;
+   }
+   else
+    cout<<total<<endl;
+    }
+}
