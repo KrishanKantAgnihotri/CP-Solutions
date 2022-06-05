@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+#include<boost/multiprecision/cpp_int.hpp>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+
+#define ull unsigned long long int
+#define ll long long
+#define vi vector<int>
+#define mii map<int,int>
+#define all(x) x.begin(),x.end()
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define endl "\n"
+#define pb push_back
+#define MOD 1e9+7
+#define INF 0x3f3f3f3f
+//#define show(x) cerr<<x#<<" "<<x<<"\n";
+
+//typedef tree<pair<int,int>,null_type, 
+//less<pair<int,int>>,rb_tree_tag,tree_order_statistics_node_update>   ordered_set;
+
+//(UNCOMMENT WHEN HAVING LOTS OF RECURSIONS)\
+#pragma comment(linker, "/stack:200000000")
+//(UNCOMMENT WHEN NEEDED)\
+#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
+//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//#pragma GCC optimize("O3")
+//uncoment for large int requirement
+
+//using boost::multiprecision::cpp_int;
+//using namespace _gnu_pbds;
+using namespace std;
+long long sum(int d0,int d1,long long k){
+    int d2,i,rep_sum=0,rem_sum=0,rep_rem;
+    long long t_sum;
+    d2=(d0+d1)%10;
+	for(i=2;i<=8;i+=2)
+        rep_sum+=(i*d2)%10;
+	k-=3;
+	rep_rem=k%4;
+	for(i=2;i<=pow(2,rep_rem);i=2*i)
+	    rem_sum+=(i*d2)%10;
+	t_sum=d0+d1+d2+rem_sum+rep_sum*(k/4);
+    return t_sum;
+}
+int main()
+{fast_io
+#ifndef ONLINE_JUDGE
+freopen("in.txt","r",stdin);
+freopen("out.txt","w",stdout);
+#endif
+int t;
+cin>>t;
+while(t--)
+{
+ll n,a,b;
+cin>>n>>a>>b;
+ll c = sum(a,b,n);
+if(c%3==0)
+cout<<"YES\n";
+else 
+cout<<"NO\n";
+
+}
+}
